@@ -6,7 +6,13 @@ module Api::V1
     skip_before_action :authenticate_user
 
     def parse
+      puts "########################"
       puts params.inspect
+      puts params.inspect['token']
+      token = params.inspect['token']
+      puts "########################"
+
+
     end
 
     private
