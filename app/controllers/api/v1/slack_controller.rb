@@ -11,8 +11,6 @@ module Api::V1
       puts params.inspect['token']
       token = params.inspect['token']
       puts "########################"
-
-
     end
 
     private
