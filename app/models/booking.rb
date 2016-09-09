@@ -28,4 +28,9 @@ class Booking < ApplicationRecord
     self.update_attributes!(returned: true)
     self.item.notify_oldest_waiting_user
   end
+
+  def to_s
+    "Booking User: #{self.user.to_s} | Start Date: #{self.start_date} | End Date: #{self.end_date}"
+  end
+
 end

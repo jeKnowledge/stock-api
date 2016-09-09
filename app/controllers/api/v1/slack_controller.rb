@@ -6,28 +6,73 @@ module Api::V1
     skip_before_action :authenticate_user
 
     def parse
-      puts "########################"
-      puts params.inspect
-      puts params["token"].inspect
-      puts "########################"
+      #client = Slack::Web::Client.new
+      #client.auth_test
+
+      token = params["token"].inspect
+      slack_handler = params["user_name"].inspect
+      text = params["text"].inspect
+
+      parse_text text
     end
 
     private
 
+    #Parse the text after /stock
+    def parse_text text
+
+      #remove escape characters and split the string into an array
+      text = text.tr!('"', '')
+      split_text = text.split(" ")
+
+      #TODO: há proteções que precisam de ser feitas quando actuo consoante o parse do input 
+      case split_text[0]
+      when "list"
+        list
+      when "show"
+        show split_text
+      when "book"
+        book split_text
+      when "help"
+        help
+      else
+        error
+      end
+    end
+
     # List items
     def list
+      @items = Item.all
+      render plain: @items.map {|item| item.to_s_list}.join("\n")
     end
 
     # Show item
-    def show
+    def show split_text
+      @item = Item.find(split_text[1])
+      if @item
+        render plain: @item.to_s_show
+      else
+        render plain: "Nonexistent item"
+      end
     end
 
     # Create booking for an item
     def book 
+      render :text => split_text[0]
+    end
+   
+    # Show the user all the possibilities
+    def help
+      render :text => "dar render de todas a instruções possíveis"
     end
 
     # Return booked item
     def return 
+    end
+
+    # Error parsing the input
+    def error
+      render :text => "error"
     end
   end
 end

@@ -27,4 +27,14 @@ class Item < ApplicationRecord
   def notify_oldest_waiting_user
     # TODO notify SLACK oldest_waiting_user
   end
+
+  def to_s_show
+    "#{self.name} (#{self.id}) Bookings: #{self.bookings.map {|booking| booking.to_s}}"
+  end
+
+  def to_s_list
+    "Item ID: #{self.id} | Item name: #{self.name}" 
+  end
+
+
 end

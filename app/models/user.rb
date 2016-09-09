@@ -41,4 +41,8 @@ class User < ApplicationRecord
   def access_token_expired?
     self.access_token_expiration_date < Time.now
   end
+
+  def to_s
+    "User: #{self.name} Slack Handler: #{self.slack_handler}" 
+  end
 end
