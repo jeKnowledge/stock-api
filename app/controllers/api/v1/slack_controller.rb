@@ -8,9 +8,7 @@ module Api::V1
     def parse
       puts "########################"
       puts params.inspect
-      puts params.inspect[:token]
-      token = params.inspect[:token]
-      pp token
+      puts params["token"].inspect
       puts "########################"
     end
 
