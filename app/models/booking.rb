@@ -30,7 +30,7 @@ class Booking < ApplicationRecord
   end
 
   def to_s
-    "Booking User: #{self.user.to_s} | Start Date: #{self.start_date} | End Date: #{self.end_date}"
+    "Booking ID: #{self.id} | Booking User: #{self.user.to_s} | Start Date: #{self.start_date} | End Date: #{self.end_date} | Returned: #{self.returned}"
   end
 
 end

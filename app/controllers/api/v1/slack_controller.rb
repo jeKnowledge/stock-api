@@ -29,6 +29,8 @@ module Api::V1
       case split_text[0]
       when "list"
         list
+      when "list_bookings"
+        list_bookings
       when "show"
         show split_text
       when "book"
@@ -46,6 +48,11 @@ module Api::V1
     def list
       @items = Item.all
       render plain: @items.map {|item| item.to_s_list}.join("\n")
+    end
+
+    def list_bookings
+      @bookings = Booking.all
+      render plain: @bookings.map {|booking| booking.to_s}.join("\n")
     end
 
     # Show item
