@@ -1,7 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Item.create(name: 'Oculus Rift',
+            photo_url: 'http://blogs-images.forbes.com/davidewalt/files/2016/03/oculus-rift-vr-headset-1200x698.jpg')
+
+Item.create(name: 'Leap Motion',
+            photo_url: 'http://www.gufshop.com/wp-content/uploads/2016/01/leap-motion-controller.png')

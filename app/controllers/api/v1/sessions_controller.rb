@@ -14,6 +14,11 @@ module Api::V1
       end
     end
 
+    def update
+      current_user.refresh_access_token!
+      render json: current_user, status: :ok
+    end
+
     def destroy
       current_user.expire_access_token!
       render json: { message: 'Logged out.' }, status: :ok

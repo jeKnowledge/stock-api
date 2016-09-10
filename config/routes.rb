@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
         # Sessions
         post :sessions, to: 'sessions#create'
+        put :sessions, to: 'sessions#update'
         delete :sessions, to: 'sessions#destroy'
 
         # Items
