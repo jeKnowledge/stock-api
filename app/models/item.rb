@@ -15,7 +15,7 @@ class Item < ApplicationRecord
 
   def current_booking
     b = bookings.order(:created_at).last
-    b && (b.end_date > Time.now || !b.returned) ? b : nil
+    b && !b.returned ? b : nil
   end
 
   def current_owner
