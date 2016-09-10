@@ -61,22 +61,32 @@ module Api::V1
       #item_id, start_date, end_date
       @item = Item.find_by_id(split_text[1])
       if @item
-        user = User.find_by params["slack_handler"]
-        pp user
-        #@booking = Booking.new({"user_id": TENHO DE O IR BUSCAR PELO SLACK HANDLER!, "item_id": split_text[2], "start_date": split_text[3], "end_date": split_text[4]})
+        begin
+          user = User.find_by params["slack_handler"]
+        rescue ActiveRecord::RecordNotFound => e
+          user = nil
+        end
 
-        #if @booking.save
-          #render json: @booking, status: :created, location: v1_booking_path(@booking)
-        #else
-          #if @booking.errors.has_key?(:item_already_booked)
-            #@waiting_queue = WaitingQueue.create(item: @booking.item,
-                                                 #user: @booking.user)
-            #render json: @waiting_queue, status: :created
-          #else
-            #render json: @booking.errors, status: :unprocessable_entity
-          #end
-        #end
-
+        if user
+          @booking = Booking.new({"user_id": user.id,
+                                  "item_id": split_text[2],
+                                  "start_date": split_text[3],
+                                  "end_date": split_text[4]})
+          if @booking.save
+            render plain: "Booking created with success" 
+          else
+            if @booking.errors.has_key?(:item_already_booked)
+              @waiting_queue = WaitingQueue.create(item: @booking.item,
+                                                   user: @booking.user)
+              #TODO: DIZER EM QUE LUGAR DA WAITING QUEUE FOI COLOCADA
+              render plain: "Someone already has that item! You were placed in the waiting queue!" 
+            else
+              render plain: "Something went wrong, please try again! Sorry!" 
+            end
+          end
+        else
+          render plain: "Sorry, but you need to register an account with your Slack Handler"
+        end
       else
         render plain: "Nonexistent item"
       end
