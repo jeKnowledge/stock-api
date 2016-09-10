@@ -48,8 +48,7 @@ module Api::V1
 
     # Show item
     def show split_text
-      @item = Item.find(split_text[1])
-      if @item
+      if @item = Item.find(split_text[1])
         render plain: @item.to_s_show
       else
         render plain: "Nonexistent item"
