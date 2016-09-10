@@ -37,6 +37,6 @@ class Booking < ApplicationRecord
   end
 
   def to_s
-    "Booking ID: #{self.id} | Booking User: #{self.user.to_s} | Start Date: #{self.start_date} | End Date: #{self.end_date} | Returned: #{self.returned}"
+    ":book: Booking #{self.id} \nBy @#{self.user.slack_handler} from #{self.start_date.strftime("%Y/%m/%d")} to #{self.end_date.strftime("%Y/%m/%d")} \n#{self.returned ? "This item was already returned" : "This item wasn't returned, yet"}\n"
   end
 end

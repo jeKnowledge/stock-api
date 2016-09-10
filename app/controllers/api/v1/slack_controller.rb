@@ -27,7 +27,7 @@ module Api::V1
       when "list"
         list
       when "list_bookings"
-        list_bookings
+        list_bookings split_text
       when "show"
         show split_text
       when "book"
@@ -47,9 +47,14 @@ module Api::V1
       render plain: @items.map {|item| item.to_s_list}.join("\n")
     end
 
-    def list_bookings
-      @bookings = Booking.all
-      render plain: @bookings.map {|booking| booking.to_s}.join("\n")
+    def list_bookings split_text
+      @bookings = Booking.where(item_id: split_text[1].to_i)
+      pp @bookings
+      if @bookings.empty?
+        render plain: "There are no bookings for this item :pensive:"
+      else
+        render plain: @bookings.map {|booking| booking.to_s}.join("\n"), parse: "full"
+      end
     end
 
     # Show item
@@ -101,7 +106,7 @@ module Api::V1
     # Show the user all the possibilities
     def help
       #TODO: FAZER O HELPER
-      render :text => "dar render de todas a instruções possíveis"
+      render :plain=> "dar render de todas a instruções possíveis"
     end
 
     # Return booked item

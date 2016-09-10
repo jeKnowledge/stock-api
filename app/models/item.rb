@@ -45,6 +45,6 @@ class Item < ApplicationRecord
   end
 
   def to_s_list
-    "Item ID: #{self.id} | Item name: #{self.name}" 
+    "Item #{self.id} *#{self.name}* #{self.current_booking ? ":white_check_mark:" : ":x:"}" 
   end
 end
