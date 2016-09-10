@@ -19,6 +19,9 @@ class Booking < ApplicationRecord
   end
 
   def waiting_queue_is_not_empty_and_user_is_waiting
+    pp "&&&&&&&&&&&&&&&&"
+    pp item
+    pp "%%%%%%%%%%%%%%%%"
     if !item.waiting_queue_entries.empty? && user != item.oldest_waiting_user
       errors.add(:base, 'The item is reserved for another user')
     end

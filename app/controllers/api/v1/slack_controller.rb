@@ -68,6 +68,7 @@ module Api::V1
         end
 
         if user
+          pp split_text[2]
           @booking = Booking.new({"user_id": user.id,
                                   "item_id": split_text[2],
                                   "start_date": split_text[3],
