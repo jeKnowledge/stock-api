@@ -34,8 +34,10 @@ class Item < ApplicationRecord
     #p 'Hey, this is a text messaging session!' if tropo.text_session
     
     #notify through slack
+    user_to_warn = self.waiting_queue_entries.order(:created_at).first&.user.slack_handler
+
     notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#stock', username: 'Bookings'
-    notifier.ping "Hello"
+    notifier.ping "@#{user_to_warn}, the item that you requested, #{self.name} (ID: #{self.id}) is now available!", icon_emoji: ":aw_yeah:", parse: "full"
   end
 
   def to_s_show
