@@ -12,10 +12,7 @@ class Booking < ApplicationRecord
   validate :waiting_queue_is_not_empty_and_user_is_waiting
 
   def item_not_currently_booked
-    pp "##########"
-    pp self.item
-    pp "#########"
-    current_booking = self.item.current_booking
+    current_booking = self.item&.current_booking
     if current_booking && current_booking != self
       errors.add(:item_already_booked, 'The item is already booked.')
     end
