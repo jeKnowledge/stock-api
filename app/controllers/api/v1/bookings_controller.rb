@@ -16,13 +16,7 @@ module Api::V1
       if @booking.save
         render json: @booking, status: :created, location: v1_booking_path(@booking)
       else
-        if @booking.errors.has_key?(:item_already_booked)
-          @waiting_queue = WaitingQueue.create(item: @booking.item,
-                                               user: @booking.user)
-          render json: @waiting_queue, status: :created
-        else
-          render json: @booking.errors, status: :unprocessable_entity
-        end
+        render json: @booking.errors, status: :unprocessable_entity
       end
     end
 

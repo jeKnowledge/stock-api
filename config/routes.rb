@@ -22,6 +22,9 @@ Rails.application.routes.draw do
         # Categories
         resources :categories
 
+        # Waiting Queue
+        resources :waiting_queues, only: [:create]
+
         # Slack Bot
         post :slack, to: 'slack#parse'
       end
