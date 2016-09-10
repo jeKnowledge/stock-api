@@ -94,11 +94,14 @@ module Api::V1
 
     # Show the user all the possibilities
     def help
+      #TODO: FAZER O HELPER
       render :text => "dar render de todas a instruções possíveis"
     end
 
     # Return booked item
     def return 
+      @booking.return!
+      render plain: "Item Booking finished with success"
     end
 
     # Error parsing the input
