@@ -4,8 +4,8 @@ Rails.application.routes.draw do
       namespace :v1 do
         # Users
         post :users, to: 'users#create'
-        put :users, to: 'users#update'
-        delete :users, to: 'users#destroy'
+        #put :users, to: 'users#update'
+        #delete :users, to: 'users#destroy'
 
         # Sessions
         post :sessions, to: 'sessions#create'
@@ -13,17 +13,17 @@ Rails.application.routes.draw do
         delete :sessions, to: 'sessions#destroy'
 
         # Items
-        resources :items
+        resources :items, only: [:index, :create]
 
         # Bookings
-        resources :bookings, except: [:index]
+        resources :bookings, only: [:create]
         put 'bookings/:id/return', to: 'bookings#return'
-
-        # Categories
-        resources :categories
 
         # Waiting Queue
         resources :waiting_queues, only: [:create]
+
+        # Categories
+        #resources :categories
 
         # Slack Bot
         post :slack, to: 'slack#parse'

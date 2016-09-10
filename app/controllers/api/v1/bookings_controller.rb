@@ -1,40 +1,14 @@
 module Api::V1
   class BookingsController < ApplicationController
-    before_action :set_booking, only: [:show, :update, :destroy, :return] 
+    before_action :set_booking, only: [:return] 
 
-    # GET /bookings
-    def index
-      @bookings = Booking.all
-
-      render json: @bookings
-    end
-
-    # POST /bookings
     def create
       @booking = Booking.new(booking_params)
 
       if @booking.save
-        render json: @booking, status: :created, location: v1_booking_path(@booking)
+        render json: @booking, status: :created
       else
-        render json: @booking.errors, status: :unprocessable_entity
-      end
-    end
-
-    # PATCH/PUT /bookings/1
-    def update
-      if @booking.update(booking_params)
-        render json: @booking
-      else
-        render json: @booking.errors, status: :unprocessable_entity
-      end
-    end
-
-    #DELETE /bookings/1
-    def destroy
-      if @booking.destroy
-        render json: @booking, status: :deleted
-      else
-        render json: @booking.errors, status: :conflict
+        render json: { message: @booking.errors.full_messages.join(', ') }, status: :unprocessable_entity
       end
     end
 

@@ -1,10 +1,10 @@
 class Item < ApplicationRecord
   # Associations 
-  has_many :bookings
-  has_many :waiting_queue_entries, class_name: 'WaitingQueue'
+  has_many :bookings, dependent: :destroy
   has_many :users, through: :bookings
+  has_many :waiting_queue_entries, class_name: 'WaitingQueue', dependent: :destroy
   has_many :waiting_users, through: :waiting_queue_entries
-  has_many :item_categories
+  has_many :item_categories, dependent: :destroy
   has_many :categories, through: :item_categories
 
   # Validations

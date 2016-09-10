@@ -35,5 +35,7 @@ module StockApi
         resource '*', :headers => :any, :methods => [:get, :post, :put, :delete]
       end
     end
+
+    ActiveModelSerializers.config.adapter = :json
   end
 end

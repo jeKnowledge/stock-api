@@ -1,5 +1,5 @@
 class BookingSerializer < ActiveModel::Serializer
-  attributes :id, :user, :item_id, :start_date, :end_date, :returned, :created_at
+  attributes :id, :user, :item_id, :start_date, :end_date, :returned 
 
   def user
     { name: object.user.name,
