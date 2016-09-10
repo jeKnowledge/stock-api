@@ -58,9 +58,30 @@ module Api::V1
 
     # Create booking for an item
     def book 
-      render :text => split_text[0]
+      #item_id, start_date, end_date
+      @item = Item.find_by_id(split_text[1])
+      if @item
+        user = User.find_by(slack_handler: params["slack_handler"])
+        pp user
+        #@booking = Booking.new({"user_id": TENHO DE O IR BUSCAR PELO SLACK HANDLER!, "item_id": split_text[2], "start_date": split_text[3], "end_date": split_text[4]})
+
+        #if @booking.save
+          #render json: @booking, status: :created, location: v1_booking_path(@booking)
+        #else
+          #if @booking.errors.has_key?(:item_already_booked)
+            #@waiting_queue = WaitingQueue.create(item: @booking.item,
+                                                 #user: @booking.user)
+            #render json: @waiting_queue, status: :created
+          #else
+            #render json: @booking.errors, status: :unprocessable_entity
+          #end
+        #end
+
+      else
+        render plain: "Nonexistent item"
+      end
     end
-   
+
     # Show the user all the possibilities
     def help
       render :text => "dar render de todas a instruções possíveis"
