@@ -12,18 +12,18 @@ module Api::V1
       end
     end
 
-    def update
-      if current_user.update(user_params)
-        render json: @user
-      else
-        render json: { message: @user.errors.full_messages.join(', ') }, status: :unprocessable_entity
-      end
-    end
+    #def update
+      #if current_user.update(user_params)
+        #render json: @user
+      #else
+        #render json: { message: @user.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      #end
+    #end
 
-    def destroy
-      current_user.destroy
-      render json: { message: 'User deleted.' }, status: :ok
-    end
+    #def destroy
+      #current_user.destroy
+      #render json: { message: 'User deleted.' }, status: :ok
+    #end
 
     private
 

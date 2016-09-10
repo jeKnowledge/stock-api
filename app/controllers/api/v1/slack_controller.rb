@@ -6,9 +6,6 @@ module Api::V1
     skip_before_action :authenticate_user
 
     def parse
-      #client = Slack::Web::Client.new
-      #client.auth_test
-
       token = params["token"].inspect
       slack_handler = params["user_name"].inspect
       text = params["text"].inspect

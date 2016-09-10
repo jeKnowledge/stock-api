@@ -1,5 +1,5 @@
 class WaitingQueueSerializer < ActiveModel::Serializer
-  attributes :user, :created_at
+  attributes :id, :user, :item_id
 
   def user
     { name: object.user.name,

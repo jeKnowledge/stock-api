@@ -4,9 +4,9 @@ class User < ApplicationRecord
   before_create :set_access_token
 
   # Associations 
-  has_many :bookings 
-  has_many :waiting_queues
+  has_many :bookings, dependent: :destroy
   has_many :items, through: :bookings
+  has_many :waiting_queues, dependent: :destroy
   has_many :waiting_items, through: :waiting_queues
 
   # Validations
