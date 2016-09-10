@@ -1,3 +1,5 @@
+require 'tropo-webapi-ruby'
+
 class Item < ApplicationRecord
   # Associations 
   has_many :bookings
@@ -25,7 +27,9 @@ class Item < ApplicationRecord
   end
 
   def notify_oldest_waiting_user
-    # TODO notify SLACK oldest_waiting_user
+    tropo = Tropo::Generator.new
+    response = tropo.parse({:network => "SMS"})
+    p 'Hey, this is a text messaging session!' if tropo.text_session
   end
 
   def to_s_show
