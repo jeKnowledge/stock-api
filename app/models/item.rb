@@ -1,4 +1,5 @@
 require 'tropo-webapi-ruby'
+require 'slack-notifier'
 
 class Item < ApplicationRecord
   # Associations 
@@ -27,9 +28,14 @@ class Item < ApplicationRecord
   end
 
   def notify_oldest_waiting_user
-    tropo = Tropo::Generator.new
-    response = tropo.parse({:network => "SMS"})
-    p 'Hey, this is a text messaging session!' if tropo.text_session
+    #notify through sms or call
+    #tropo = Tropo::Generator.new
+    #response = tropo.parse({:network => "SMS"})
+    #p 'Hey, this is a text messaging session!' if tropo.text_session
+    
+    #notify through slack
+    notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#stock', username: 'Bookings'
+    notifier.ping "Hello"
   end
 
   def to_s_show

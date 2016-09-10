@@ -9,6 +9,8 @@ gem 'puma', '~> 3.0'
 
 gem 'tropo-webapi-ruby'
 
+gem 'slack-notifier'
+
 gem 'pg'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
