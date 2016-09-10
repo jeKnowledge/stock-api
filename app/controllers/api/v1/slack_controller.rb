@@ -33,6 +33,8 @@ module Api::V1
         show split_text
       when "book"
         book split_text
+      when "return"
+        return_item split_text
       when "help"
         help
       else
@@ -99,7 +101,8 @@ module Api::V1
     end
 
     # Return booked item
-    def return 
+    def return_item split_text
+      @booking = Booking.find(split_text[1])
       @booking.return!
       render plain: "Item Booking finished with success"
     end
