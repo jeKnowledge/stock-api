@@ -11,7 +11,7 @@ class Booking < ApplicationRecord
   validate :booking_is_unique_on_time_period, on: :create
   validate :end_date_is_after_start_date 
   validate :item_not_currently_booked
-  validate :waiting_queue_is_not_empty_and_user_is_waiting
+  validate :waiting_queue_is_not_empty_and_user_is_waiting, on: :create
 
   def booking_is_unique_on_time_period
     if !item.bookings.where("(start_date <= ? AND start_date >= ?) OR (end_date <= ? AND end_date >= ?)", end_date, start_date, end_date, start_date).empty?
