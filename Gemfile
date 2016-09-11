@@ -6,16 +6,16 @@ gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 
 gem 'puma', '~> 3.0'
 
-gem 'tropo-webapi-ruby'
+gem 'twilio-ruby'
 
 gem 'slack-notifier'
+
+gem 'dotenv-rails'
 
 gem 'pg'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
-
-gem 'tropo-webapi-ruby'
 
 gem 'bcrypt', '~> 3.1.7'
 

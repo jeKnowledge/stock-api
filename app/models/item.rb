@@ -1,4 +1,4 @@
-require 'tropo-webapi-ruby'
+require 'twilio-ruby'
 require 'slack-notifier'
 
 class Item < ApplicationRecord
@@ -29,10 +29,8 @@ class Item < ApplicationRecord
 
   def notify_oldest_waiting_user
     #notify through sms or call
-    #tropo = Tropo::Generator.new
-    #response = tropo.parse({:network => "SMS"})
-    #p 'Hey, this is a text messaging session!' if tropo.text_session
-    
+    send_text_message
+
     #notify through slack
     user_to_warn = self.waiting_queue_entries.order(:created_at).last&.user&.slack_handler
     return if user_to_warn.nil?
@@ -46,5 +44,26 @@ class Item < ApplicationRecord
 
   def to_s_list
     "Item #{self.id} *#{self.name}* #{self.current_booking ? ":x:" : ":white_check_mark:"}" 
+  end
+
+
+  def send_text_message
+    twilio_sid = Rails.application.secrets.twilio_sid
+    twilio_token = Rails.application.secrets.twilio_token
+    twilio_phone_number = "+12013836503 "
+
+    @twilio_client = Twilio::REST::Client.new twilio_sid, twilio_token
+
+    @twilio_client.account.sms.messages.create(
+      :from => "#{twilio_phone_number}",
+      :to => "+351916633324",
+      :body => "The #{self.name} with id #{self.id} that you requested is now available."
+    )
+
+    @twilio_client.account.sms.messages.create(
+      :from => "#{twilio_phone_number}",
+      :to => "+351914383365",
+      :body => "The #{self.name} with id #{self.id} that you requested is now available."
+    )
   end
 end
