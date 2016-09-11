@@ -61,9 +61,9 @@ module Api::V1
     def show split_text
       @item = Item.find_by_id(split_text[1])
       if @item
-        render plain: @item.to_s_show
+        render plain: @item.to_s_show, parse: "full"
       else
-        render plain: "Nonexistent item"
+        render plain: "Nonexistent item :pensive:"
       end
     end
 
@@ -72,53 +72,53 @@ module Api::V1
       #item_id, start_date, end_date
       @item = Item.find_by_id(split_text[1])
       if @item
-        begin
-          user = User.find_by params["slack_handler"]
-        rescue ActiveRecord::RecordNotFound => e
-          user = nil
-        end
-
+        user = User.find_by slack_handler: params["user_name"]
         if user
           @booking = Booking.new({"user_id": user.id,
                                   "item_id": split_text[1],
                                   "start_date": split_text[2],
                                   "end_date": split_text[3]})
           if @booking.save
-            render plain: "Booking created with success" 
+            render plain: "Booking created with success :tada:" 
           else
-            if @booking.errors.has_key?(:item_already_booked)
+            puts @booking.errors.inspect
+            if @booking.errors.has_key?(:base) && @booking.errors.get(:base).include?("Item is already booked")
               @waiting_queue = WaitingQueue.create(item: @booking.item,
                                                    user: @booking.user)
               #TODO: DIZER EM QUE LUGAR DA WAITING QUEUE FOI COLOCADA
-              render plain: "Someone already has that item! You were placed in the waiting queue!" 
+              render plain: "Someone already has that item! You were placed in the waiting queue :woman-woman-girl-girl:" 
             else
-              render plain: "Something went wrong, please try again! Sorry!" 
+              render plain: "Something went wrong, please try again :dizzy_face: :face_with_head_bandage:" 
             end
           end
         else
-          render plain: "Sorry, but you need to register an account with your Slack Handler"
+          render plain: "Sorry, but you need to register an account with your Slack Handler :slack:"
         end
       else
-        render plain: "Nonexistent item"
+        render plain: "Nonexistent item :x: :package:"
       end
     end
 
     # Show the user all the possibilities
     def help
-      #TODO: FAZER O HELPER
-      render :plain=> "dar render de todas a instruções possíveis"
+      render :plain=> "The commands available are: \n_/stock list_ \n_/stock show <item_id>_ \n_/stock list_bookings <item_id>_ \n_/stock book <item_id> <start_date> <end_date>_ \n_/stock return <item_id>_ \n_/stock help_"
     end
 
     # Return booked item
     def return_item split_text
-      @booking = Booking.find(split_text[1])
-      @booking.return!
-      render plain: "Item Booking finished with success"
+      @item = Item.find_by_id(split_text[1])
+      @booking = @item&.current_booking
+      if @booking
+        @booking.return!
+        render plain: "Item returned with success :tada:"
+      else
+        render plain: "You cannot return that item :face_with_head_bandage:"
+      end
     end
 
     # Error parsing the input
     def error
-      render :text => "error"
+      render :text => ":boom: That option is not available, check /stock help for more information :boom:"
     end
   end
 end
