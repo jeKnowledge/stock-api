@@ -28,14 +28,17 @@ class Item < ApplicationRecord
   end
 
   def notify_oldest_waiting_user
-    #notify through sms or call
-    send_text_message
-
-    #notify through slack
     user_to_warn = self.waiting_queue_entries.order(:created_at).last&.user&.slack_handler
     return if user_to_warn.nil?
+
+    # Slack notifiction 
     notifier = Slack::Notifier.new "https://hooks.slack.com/services/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", channel: '#stock', username: 'Bookings'
     notifier.ping "@#{user_to_warn}, the item that you requested, #{self.name} (ID: #{self.id}) is now available!", icon_emoji: ":aw_yeah:", parse: "full"
+
+    # SMS Notification
+    # TODO fix hardcoded numbers
+    send_text_message
+
   end
 
   def to_s_show
