@@ -8,31 +8,39 @@ class Booking < ApplicationRecord
   validates :item_id, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
-  validate :end_date_is_after_start_date
+  validate :booking_is_unique_on_time_period, on: :create
+  validate :end_date_is_after_start_date 
   validate :item_not_currently_booked
   validate :waiting_queue_is_not_empty_and_user_is_waiting
 
+  def booking_is_unique_on_time_period
+    if !item.bookings.where("(start_date <= ? AND start_date >= ?) OR (end_date <= ? AND end_date >= ?)", end_date, start_date, end_date, start_date).empty?
+      errors.add(:base, 'Item is already booked or partially booked on the time frame given')
+    end
+  end
+
   def end_date_is_after_start_date
-    if end_date <= start_date
-      errors.add(:end_date, 'End date must be after start date.')
+    if self.end_date <= self.start_date
+      errors.add(:end_date, 'must be after start date')
     end
   end
 
   def item_not_currently_booked
     current_booking = self.item&.current_booking
     if current_booking && current_booking != self
-      errors.add(:item_already_booked, 'The item is already booked.')
+      errors.add(:base, 'Item is already booked')
     end
   end
 
   def waiting_queue_is_not_empty_and_user_is_waiting
     if !item.waiting_queue_entries.empty? && user != item.oldest_waiting_user
-      errors.add(:base, 'The item is reserved for another user.')
+      errors.add(:base, 'Item is reserved for another user')
     end
   end
 
   def return!
-    self.update_attributes!(returned: true)
+    self.update_attributes!(returned: true,
+                            end_date: Time.now)
     self.item.notify_oldest_waiting_user
   end
 
